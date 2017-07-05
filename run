@@ -1,0 +1,6 @@
+#!/bin/bash
+thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $thisdir
+script="scripts/predicate-matrix-tagger.sh"
+cat | $script
+

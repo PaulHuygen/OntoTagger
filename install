@@ -1,0 +1,55 @@
+#!/bin/bash
+# Installs Ontotagger in this directory, Framenet-SRL and Nominal-Events in parallel-directories.
+# Installs https://github.com/cltl/vua-resources.git if it isn't there already.
+thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+cd $thisdir
+cd ..
+socketdir=`pwd`
+cd ${thisdir}
+
+function check_install_vua_resources () {
+    if
+	[ ! -d "${socketdir}/vua-resources" ]
+    then
+	cd ${socketdir}
+	git clone https://github.com/cltl/vua-resources.git
+    fi  
+}
+
+
+function install_derived_module () {
+  local derived_module=$1
+  local runfile_template=$2
+  local runfile="${derived_module}/run"
+  cd ${thisdir}
+  if
+      [ ! -d "../${derived_module}" ]
+  then
+      mkdir -p "../${derived_module}"
+      if 
+	  [ $? -gt 0 ]
+      then
+	  echo "Cannot create ${derived_module}"
+	  exit 1
+      fi
+      cp ${runfile_template} ../${derived_module}/run
+      chmod 775 ../${derived_module}/run
+  fi
+}
+
+cd ${thisdir}
+check_install_vua_resources
+install_derived_module Framenet_SRL Framenet_SRL_runscript
+install_derived_module Nominal_Events Nominal_Events_runscript
+
+set -e
+mvn install
+cd target
+jarfile=`ls -1 ontotagger-*-jar-with-dependencies.jar`
+cd ${thisdir}
+mkdir -p ${thisdir}/lib
+mv "$thisdir/target/$jarfile" "$thisdir/lib"
+
+#cd "$thisdir"
+#rm -R target
+#rm -R src
