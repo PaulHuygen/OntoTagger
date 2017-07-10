@@ -3,5 +3,5 @@ thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $thisdir
 cd ../OntoTagger
 jarfile=`ls -1 lib/ontotagger-*-jar-with-dependencies.jar`
-script="scripts/nominal-events.sh
+script="scripts/nominal-events.sh"
 cat | $script 

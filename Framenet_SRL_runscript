@@ -3,5 +3,5 @@ thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $thisdir
 cd ../OntoTagger
 jarfile=`ls -1 lib/ontotagger-*-jar-with-dependencies.jar`
-script="scripts/srl-framenet-tagger.sh
+script="scripts/srl-framenet-tagger.sh"
 cat | $script | gawk '/^frameMap.size()/ {next}; {print}'
