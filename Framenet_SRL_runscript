@@ -1,7 +1,20 @@
 #!/bin/bash
-thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-cd $thisdir
-cd ../OntoTagger
+modname=Framenet_SRL
+mother_modname=OntoTagger
+#
+# Find the path to the OntoTagger module
+#
+if
+  [ -z ${MODROOT+x} ]
+then
+  # Find out path ourselves
+    thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+    MODROOT="$( dirname ${thisdir})"
+else
+  thisdir=$MODROOT/$modname
+fi
+motherdir=$MODROOT/$mother_modname
+cd $motherdir
 jarfile=`ls -1 lib/ontotagger-*-jar-with-dependencies.jar`
 script="scripts/srl-framenet-tagger.sh"
 cat | $script | gawk '/^frameMap.size()/ {next}; {print}'
