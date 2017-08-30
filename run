@@ -1,5 +1,17 @@
 #!/bin/bash
-thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+modname=Ontotagger
+#
+# Find the path to this module
+#
+if
+  [ -z ${MODROOT+x} ]
+then
+  # Find out path ourselves
+  thisdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+else
+  thisdir=$MODROOT/$modname
+fi
+thisscript=${thisdir}/run
 cd $thisdir
 script="scripts/predicate-matrix-tagger.sh"
 cat | $script
