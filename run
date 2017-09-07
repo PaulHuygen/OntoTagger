@@ -1,5 +1,5 @@
 #!/bin/bash
-modname=Ontotagger
+modname=OntoTagger
 #
 # Find the path to this module
 #
