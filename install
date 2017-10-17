@@ -7,12 +7,48 @@ cd ..
 socketdir=`pwd`
 cd ${thisdir}
 
+
+# Github cloning may fail occasionally. Therefore, retry if it fails.
+function clone_githup_repo () {
+    local reponame=$1
+    local repourl=$2
+    local commitset=$3
+    local maxtrials=10
+    local res=0
+    local trial=0
+    local go_on=0
+    while
+	[ $go_on == 0 ]
+    do
+ 	git clone $repourl
+	res=$?
+	if
+	    [ $res == 0 ]
+	then
+	    cd $reponame
+	    git checkout $commitset
+	    go_on=1
+	else
+	    trial=$((trial+1))
+	    if
+		[ $trial -gt $maxtrials ]
+	    then
+		go_on=1
+	    fi
+	fi
+    done
+}
+
 function check_install_vua_resources () {
+    local reponame=vua-resources
+    local repourl="https://github.com/cltl/vua-resources.git"
+    local commitset=e730ce672f2a13457393028b679e9147334c490e
     if
 	[ ! -d "${socketdir}/vua-resources" ]
     then
 	cd ${socketdir}
-	git clone https://github.com/cltl/vua-resources.git
+	clone_githup_repo $reponame $repourl $commitset
+#	git clone https://github.com/cltl/vua-resources.git
     fi  
 }
 
